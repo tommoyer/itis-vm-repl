@@ -1,35 +1,37 @@
 # SPDX-FileCopyrightText: 2023-present Tom Moyer <tom.moyer@uncc.edu>
 #
 # SPDX-License-Identifier: MIT
-import click
 
-from click_repl import repl
-from prompt_toolkit.history import FileHistory
-from .interactive_command import interactive_command
-from importlib_metadata import version
+from rich import print
+from typer import Context
 
-__version__ = version(__package__)
+from typer_shell import make_typer_shell
 
 
-@click.group(context_settings={"help_option_names": ["-h", "--help"]}, invoke_without_command=True)
-@click.version_option(version=__version__, prog_name="ITIS VM REPL")
-def itis_vm_repl():
-    pass
+class App:
+    def __init__(self):
+        pass
 
 
-@itis_vm_repl.command()
-def test():
-    interactive_command('/bin/bash')
+app = make_typer_shell(prompt="💻: ", obj=App(), intro='\n Welcome to the ITIS VM shell\n Type help to see commands\n Type quit or exit to leave\n')
+app._add_completion = False
 
 
-@itis_vm_repl.command()
-def vmrepl():
-    click.echo("Use ':quit' or Ctrl+D to quit.")
-    prompt_kwargs = {
-        'history': FileHistory('/tmp/repl-history'),
-    }
-    repl(click.get_current_context(), prompt_kwargs=prompt_kwargs)
+@app.command()
+def foobar():
+    '''
+    Foobar command
+    '''
+    print('Called foobar')
 
 
-if __name__ == '__main__':
-    itis_vm_repl()
+@app.command()
+def name(ctx: Context):
+    '''
+    Name command
+    '''
+    print('Called name command')
+
+
+if __name__ == "__main__":
+    app()
