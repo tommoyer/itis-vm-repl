@@ -100,16 +100,6 @@ files = [
 setuptools = "*"
 
 [[package]]
-name = "lxc"
-version = "3.0.4.0"
-description = "Python3 bindings for LXC"
-optional = false
-python-versions = "*"
-files = [
-    {file = "lxc-3.0.4.0.tar.gz", hash = "sha256:533686cc131f3d0931432437f619ad4f7ee7535ed947235ada83476562fa6bd0"},
-]
-
-[[package]]
 name = "markdown-it-py"
 version = "3.0.0"
 description = "Python port of markdown-it. Markdown parsing, done right!"
@@ -349,4 +339,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "35d4afc3a275dbd7e04030b25b5ec5b0a23051c4d8f0e007eb343dc78525a14e"
+content-hash = "8b2c9062a53b4c7094da20de37a447790ca0c22cae8ff9d702031d86cd959e8e"
