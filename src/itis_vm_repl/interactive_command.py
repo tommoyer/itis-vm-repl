@@ -7,9 +7,11 @@ import pty
 
 from subprocess import Popen
 
+Command = list[str]
 
-def interactive_command(command):
-    command = 'bash'
+
+def interactive_command(command: Command):
+    # command = 'bash'
     # command = 'docker run -it --rm centos /bin/bash'.split()
 
     # save original tty setting then set it to raw mode

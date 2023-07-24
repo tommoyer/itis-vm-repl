@@ -2,11 +2,16 @@
 #
 # SPDX-License-Identifier: MIT
 
-from rich import print
-from typer import Context, Argument, Option
+import subprocess
 
+from rich import print
+from rich.console import Console
+from typer import Context, Argument, Option, confirm
 from typer_shell import make_typer_shell
 from typing_extensions import Annotated
+from .interactive_command import interactive_command
+from dataclasses import dataclass
+
 
 intro_help = '''
  Welcome to the ITIS VM shell
@@ -15,14 +20,32 @@ intro_help = '''
  Type quit or exit to leave
 '''
 
+console = Console(color_system=None)
+
 
 class App:
     def __init__(self):
         pass
 
 
+@dataclass
+class State:
+    ''' Class for state tracking '''
+    verbose: bool = False
+    debug: bool = False
+
+    def toggle_debug(self):
+        self.debug = not self.debug
+        print(f'Debug set to: {state.debug}')
+
+    def toggle_verbose(self):
+        self.verbose = not self.verbose
+        print(f'Verbose set to: {state.verbose}')
+
+
 app = make_typer_shell(prompt="💻: ", obj=App(), intro=intro_help)
 app._add_completion = False
+state = State()
 
 
 @app.command(hidden=True)
@@ -33,12 +56,72 @@ def lxd_init(ctx: Context):
     print('Called lxd-init')
 
 
+@app.command(hidden=True)
+def vm_shell(ctx: Context):
+    '''
+    Access shell on VM
+    '''
+    interactive_command(['/bin/bash', '-l'])
+
+
+@app.command(hidden=True)
+def verbose(ctx: Context):
+    '''
+    Toggle the verbosity
+    '''
+    state.toggle_verbose()
+
+
+@app.command(hidden=True)
+def debug(ctx: Context):
+    '''
+    Toggle debug output
+    '''
+    state.toggle_debug()
+
+
 @app.command()
-def create(ctx: Context):
+def list(ctx: Context):
+    '''
+    List containers
+    '''
+    command = ['/snap/bin/lxc', 'list']
+    output = subprocess.run(command, capture_output=True)
+    console.print(output.stdout.decode('utf-8'))
+
+
+@app.command()
+def reboot(ctx: Context):
+    '''
+    Reboot the VM
+    '''
+    if confirm('Are you sure you want to reboot?'):
+        if state.debug:
+            print('Rebooting the VM now')
+        else:
+            subprocess.run(['sudo', 'shutdown', '-r', 'now'])
+
+
+@app.command()
+def shutdown(ctx: Context):
+    '''
+    Shutdown the VM
+    '''
+    if confirm('Are you sure you want to shutdown?'):
+        if state.debug:
+            print('Shutting down the VM now')
+        else:
+            subprocess.run(['sudo', 'shutdown', '-h', 'now'])
+
+
+@app.command()
+def create(ctx: Context,
+           container_name: Annotated[str, Argument(help="The name of the container", show_default=False)],
+           ip_address: Annotated[str, Argument(help="The IP address of the container", show_default=False)],):
     '''
     Create new container
     '''
-    print('Called create command')
+    print('Called create')
 
 
 @app.command()
