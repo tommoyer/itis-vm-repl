@@ -10,9 +10,14 @@ from subprocess import Popen
 Command = list[str]
 
 
-def interactive_command(command: Command):
+def interactive_command(command: Command, fake: bool = False):
     # command = 'bash'
     # command = 'docker run -it --rm centos /bin/bash'.split()
+
+    if fake:
+        print('Fake running command:')
+        print(' '.join(command))
+        return
 
     # save original tty setting then set it to raw mode
     old_tty = termios.tcgetattr(sys.stdin)
