@@ -89,6 +89,14 @@ def _debug(ctx: Context):
 
 
 @app.command(hidden=True)
+def _upgrade(ctx: Context):
+    '''
+    Upgrade the REPL
+    '''
+    non_interactive_command(['/usr/bin/pipx', 'upgrade', 'itis_vm_repl'])
+
+
+@app.command(hidden=True)
 def _fake(ctx: Context):
     '''
     Toggle fake operation
