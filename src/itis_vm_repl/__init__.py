@@ -51,9 +51,8 @@ state = State()
 
 
 def non_interactive_command(command: list[str]):
-    if state.debug or state.fake:
-        print('Running command:')
-        print(' '.join(command))
+    print('Running command:')
+    print(' '.join(command))
     if not state.fake:
         output = subprocess.run(command, capture_output=True)
         if len(output.stdout.decode('utf-8')) > 0:
