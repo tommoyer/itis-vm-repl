@@ -9,9 +9,10 @@ from rich.console import Console
 from typer import Context, Argument, Option, confirm
 from typer_shell import make_typer_shell
 from typing_extensions import Annotated
-from .interactive_command import interactive_command
 from dataclasses import dataclass
 from pathlib import Path
+
+Command = list[str]
 
 
 intro_help = '''
@@ -57,6 +58,14 @@ def non_interactive_command(command: list[str]):
         output = subprocess.run(command, capture_output=True)
         if len(output.stdout.decode('utf-8')) > 0:
             console.print(output.stdout.decode('utf-8'))
+
+
+def interactive_command(command: Command, fake: bool = False):
+    if fake:
+        print('Fake running command:')
+        print(' '.join(command))
+        return
+    subprocess.call(command)
 
 
 def ensure_file_store():
