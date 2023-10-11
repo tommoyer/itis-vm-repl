@@ -6,6 +6,7 @@ echo "Updating packages"
 sudo apt dist-upgrade -y &> bootstrap.log
 echo "Installing pipx"
 sudo apt install pipx git -y &> bootstrap.log
+pipx ensurepath
 echo "Installing lxd"
 sudo snap install lxd --channel=5.0/stable &> bootstrap.log
 echo "Installing REPL"
