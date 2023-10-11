@@ -5,7 +5,7 @@ sudo apt update &> bootstrap.log
 echo "Updating packages"
 sudo apt dist-upgrade -y &> bootstrap.log
 echo "Installing pipx"
-sudo apt install pipx -y &> bootstrap.log
+sudo apt install pipx git -y &> bootstrap.log
 echo "Installing lxd"
 sudo snap install lxd --channel=5.0/stable &> bootstrap.log
 echo "Installing REPL"
@@ -33,6 +33,5 @@ sudo adduser ubuntu lxd
 echo "Adding escape-hatch user"
 sudo adduser escape
 sudo adduser escape lxd
-sudo passwd escape
 
 echo "Done. Apply tweaks to UI"
