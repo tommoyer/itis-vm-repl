@@ -10,7 +10,7 @@ pipx ensurepath
 echo "Installing lxd"
 sudo snap install lxd --channel=5.0/stable &> bootstrap.log
 echo "Installing REPL"
-pipx install git+https://github.com/tommoyer/itis-3246-repl.git
+pipx install git+https://github.com/tommoyer/itis-vm-repl.git
 echo "Setting up desktop file"
 mkdir -p /home/ubuntu/.local/share/applications/
 cat<<EOF > /home/ubuntu/.local/share/applications/itis-vm-repl.desktop
